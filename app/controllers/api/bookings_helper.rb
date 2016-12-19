@@ -6,18 +6,22 @@ module Api::BookingsHelper
   end
 
   def push_booking_to_drivers(driver_list, booking)
-    new_list = []
     driver_list.each do |driver|
-      new_list.push('driver_'+driver.id.to_s)
+      chan = 'driver_'+driver.id.to_s
+      Pusher.trigger(chan, 'ride', {
+          action: 'new_booking',
+          booking: {
+              start_location: booking.location.pickup_address,
+              destination: booking.location.dropoff_address,
+              id: booking.id
+          },
+          customer: {
+              first_name: booking.user.first_name,
+              last_name: booking.user.last_name,
+              email: booking.user.email
+          }
+      })
     end
-    Pusher.trigger('driver_6', 'ride', {
-        action: 'new_booking',
-        booking: {
-            start_location: booking.location.pickup_address,
-            destination: booking.location.dropoff_address,
-            id: booking.id
-        }
-    })
   end
 
   def create_drivers_list(drivers, driver_list, location)
