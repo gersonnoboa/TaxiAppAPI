@@ -15,7 +15,7 @@ module Api::BookingsHelper
 
   def push_booking_to_drivers(driver_list, booking)
     driver_list.each do |driver|
-      chan = 'driver_'+driver.id.to_s
+      chan = 'driver_'+driver.to_s
       Pusher.trigger(chan, 'ride', {
           action: 'new_booking',
           booking: {
