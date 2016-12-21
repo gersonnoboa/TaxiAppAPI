@@ -55,8 +55,8 @@ module Api::BookingsHelper
   end
 
   def push_status_to_user(booking, driver)
-    Pusher.trigger("user_#{booking.user_id}", 'pickup', {
-      message: "Your taxi is enroute",
+    Pusher.trigger("customer_#{booking.user_id}", 'pickup', {
+      message: 'Your taxi is enroute',
       car_model: driver.car_model,
       car_color: driver.car_color,
       plate_number: driver.plate_number

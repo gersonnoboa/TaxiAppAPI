@@ -28,9 +28,9 @@ module Api
         if booking.status != Booking::CLOSED
           helpers.update_status(booking, driver)
           helpers.push_status_to_user(booking, driver)
-          render json: {message: "Proceed to pickup location"}
+          render json: {status: 'success'}
         else
-          render json: {message: "Another driver is on the way"}
+          render json: {error: 'Request is no longer available'}
         end
       else
         render json: {error: "Unauthorized"}, status: 404
