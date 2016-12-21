@@ -110,43 +110,4 @@ RSpec.describe Api::UsersController, type: :controller do
     end
   end
 
-  describe "POST #status" do
-
-    before do
-      user = FactoryGirl.create(:user, user_type: "Driver")
-      driver = FactoryGirl.create(:driver, user_id: user.id)
-      post :status, {user: {"token": user.token}, driver: {"status": 1}}
-    end
-
-    it "returns http success" do
-      expect(response).to have_http_status(:success)
-      expect(response.status).to eq(200)
-    end
-
-    it "Gives a successfully response for valid driver" do
-      response_message = {status: "Your status has been successfully updated"}
-      expect(response.body).to eq response_message.to_json
-    end
-
-    it "updates the drivers status to the given status update" do
-      user = FactoryGirl.create(:user, user_type: "Driver")
-      driver = FactoryGirl.create(:driver, user_id: user.id)
-      expect(user.driver.status).to eq Driver::ACTIVE
-    end
-
-    it "Sets the response for any status which doesn't conform status constants to Inactive" do
-      user = FactoryGirl.create(:user, user_type: "Driver")
-      driver = FactoryGirl.create(:driver, user_id: user.id)
-      post :status, {user: {"token": user.token}, driver: {"status": "ZZthieyrhs"}}
-      expect(user.driver.status).to eq Driver::INACTIVE
-    end
-
-    it "Throws an error message for someone who isn't a driver" do
-      user = FactoryGirl.create(:user)
-      post :status, {user: {"token": user.token}, driver: {"status": "Active"}}
-      response_message = {error: "You are not authorized to perform this action"}
-      expect(response.body).to eq response_message.to_json
-    end
-  end
-
 end

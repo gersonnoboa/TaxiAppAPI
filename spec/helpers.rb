@@ -12,6 +12,12 @@ module Helpers
     post :login, user: { email: user.email, password: user.password}
   end
 
+  def driver_login
+    user = FactoryGirl.create(:user)
+    driver = FactoryGirl.create(:driver, user_id: user.id)
+    post :login, user: { email: user.email, password: user.password}
+  end
+
   def create_booking
     user = FactoryGirl.create(:user)
     location = FactoryGirl.create(:location)
