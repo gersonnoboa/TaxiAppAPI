@@ -65,6 +65,7 @@ module Api
           if new_status.nil?
             render json: { error: 'Unknown status was provided' }, status: 200
           else
+            driver.status = new_status
             if driver.save
               render json: { status: 'success' }, status: 200
             else
