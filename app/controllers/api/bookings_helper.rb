@@ -5,6 +5,14 @@ module Api::BookingsHelper
     Booking.create(location_id: location.id, status: Booking::AVAILABLE, user_id: user.id)
   end
 
+  def push_to_next_driver(driver, booking)
+    driver_list = []
+    drivers = Driver.where("status = ? ", Driver::ACTIVE).where("id != ?", driver.id)
+    location = Location.find_by(id: booking.location_id)
+    create_drivers_list(drivers, driver_list, location)
+    push_booking_to_drivers(driver_list, booking)
+  end
+
   def push_booking_to_drivers(driver_list, booking)
     driver_list.each do |driver|
       chan = 'driver_'+driver.id.to_s
