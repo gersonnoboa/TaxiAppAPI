@@ -2,7 +2,7 @@ module Api
   class DriversController < ApiController
     def login
 	    logger.debug
-      user = User.find_by(email: params[:user][:email])#.try(:authenticate, params[:user][:password])
+      user = User.find_by(email: params[:user][:email]).try(:authenticate, params[:user][:password])
       if user
         driver = Driver.find_by(user_id: user.id)
         if driver
@@ -57,6 +57,7 @@ module Api
     end
 
     def status
+      logger.debug
       user = User.find_by(token: params[:user][:token])
       if user
         driver = Driver.find_by(user_id: user.id)
@@ -76,7 +77,7 @@ module Api
           render json: {error: 'Details could not be loaded'}, status: 404
         end
       else
-        render json: { error: 'You are not authorized to perform this action' }, status: 404
+        render json: { error: 'You can not authorized to perform this action' }, status: 404
       end
 
     end
