@@ -1,5 +1,11 @@
 # DEVELOPERS GUIDE
 
+## Build Status
+[ ![Codeship Status for strs_taxi/taxi-home-driver](https://app.codeship.com/projects/f3ef9660-a9e1-0134-421d-3669d202e5b5/status?branch=master)](https://app.codeship.com/projects/191767)
+
+## App URL
+http://strs-taxi2.herokuapp.com/
+
 ##Getting Started
 
 + Clone the repo:
