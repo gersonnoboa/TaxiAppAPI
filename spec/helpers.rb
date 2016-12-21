@@ -7,6 +7,13 @@ module Helpers
     returned_user = {"data": {"id": user.id.to_s, "type": "users", "attributes": {"first-name": user.first_name, "last-name": user.last_name, "token": user.token, "email": user.email, "user-type": user.user_type}}}
   end
 
+  def returned_driver(user)
+    {"data":{
+        "user": {"id": user.id.to_s, "type": 'driver', "first_name": user.first_name, "last_name": user.last_name, "token": user.token, "email": user.email, "dob": user.dob}},
+        "driver": {"id": user.driver.id, "car_model": user.driver.car_model}
+    }
+  end
+
   def login
     user = FactoryGirl.create(:user)
     post :login, user: { email: user.email, password: user.password}

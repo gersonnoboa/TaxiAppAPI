@@ -6,6 +6,7 @@ module Api
       if user
         driver = Driver.find_by(user_id: user.id)
         if driver
+          session[:current_driver_id] = driver.id
           render json: {data: {user: user, driver: driver}}, status: 200
         else
           render json: {error: 'Driver does not exist'}, status: 404
@@ -21,6 +22,7 @@ module Api
       if driver
         driver.status = Driver::INACTIVE
         driver.save
+        session[:current_driver_id] = nil
       else
         render json: {error: 'Driver does not exist'}, status: 404
       end
@@ -104,16 +106,17 @@ module Api
     private
     def set_status(status)
       status = status.capitalize
-      if status == Driver::ACTIVE
-        Driver::ACTIVE
-      elsif status == Driver::BUSY
-        Driver::BUSY
-      elsif status == Driver::TRANSIT
-        Driver::TRANSIT
-      elsif status == Driver::INACTIVE
-        Driver::INACTIVE
-      else
-        NIL
+      case status
+        when Driver::ACTIVE
+          Driver::ACTIVE
+        when Driver::BUSY
+          Driver::BUSY
+        when Driver::TRANSIT
+          Driver::TRANSIT
+        when Driver::INACTIVE
+          Driver::INACTIVE
+        else
+          nil
       end
     end
   end

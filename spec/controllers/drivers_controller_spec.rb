@@ -21,17 +21,18 @@ RSpec.describe Api::DriversController, type: :controller do
       expect(response.body).to eq(error_message.to_json)
     end
 
+    it "creates a session for the logged in user" do
+      driver_login
+      expect(session[:current_driver_id]).not_to eq(nil)
+    end
+
     xit "returns a valid user details for valid login" do
       driver_login
-      user = User.find_by(id: session[:current_user_id])
-      returned_user = returned_user(user)
+      user = User.includes(:driver).find_by(id: session[:current_driver_id])
+      returned_user = returned_driver(user)
       expect(response.body).to eq(returned_user.to_json)
     end
 
-    xit "creates a session for the logged in user" do
-      driver_login
-      expect(session[:current_user_id]).not_to eq(nil)
-    end
   end
 
   describe "POST #logout" do
@@ -40,19 +41,8 @@ RSpec.describe Api::DriversController, type: :controller do
       expect(response.status).to eq(200)
     end
 
-    xit "logs out the current_driver" do
-      expect(session[:current_user_id]).to eq(nil)
-    end
-  end
-
-  describe "POST #logout" do
-    it "returns http success" do
-      expect(response).to have_http_status(:success)
-      expect(response.status).to eq(200)
-    end
-
-    xit "logs out the current_user" do
-      expect(session[:current_user_id]).to eq(nil)
+    it "logs out the current_driver" do
+      expect(session[:current_driver_id]).to eq(nil)
     end
   end
 
