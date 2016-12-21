@@ -36,7 +36,7 @@ RSpec.describe Api::BookingsController, type: :controller do
 
     it "returns an appropraite response for valid params" do
       accept_response
-      message = {message: "Proceed to pickup location"}
+      message = {status: 'success'}
       expect(response.body).to eq(message.to_json)
     end
 
